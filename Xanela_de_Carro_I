@@ -1,0 +1,65 @@
+// Declaración das E/S usando sentenzas dos preprocesador
+#define PULSADOR  10
+#define ARRIBA    11
+#define ABAIXO    12
+
+// Declaración de variables
+bool estado = 0;
+int  tAceso = 7000;
+int  contador = 0;
+
+void setup()  
+{
+   pinMode(PULSADOR, INPUT);
+   pinMode(ARRIBA, OUTPUT);
+   pinMode(ABAIXO, OUTPUT);
+  
+   Serial.begin(9600);
+}
+
+void  loop()  
+{
+   // Lectura do pulsador
+  if(digitalRead(PULSADOR))  
+  {
+    estado = !estado;
+    contador = 100;
+    while(digitalRead(PULSADOR))
+    {
+      delay(20);
+    }
+  
+  }
+  
+   // Fin lectura pulsador
+  
+   // Accionar motor correspondente
+  
+  if(contador > 0)  
+  {
+    if(estado == 0)  
+    {
+      digitalWrite(ARRIBA, HIGH);
+      digitalWrite(ABAIXO, LOW);
+      delay(70);
+      contador--;
+    }
+    else  
+    {
+      digitalWrite(ARRIBA, LOW);
+      digitalWrite(ABAIXO, HIGH);
+      delay(70);
+      contador--;
+      
+    }
+      
+  }
+  
+  else 
+  {
+      digitalWrite(ARRIBA, LOW);
+      digitalWrite(ABAIXO, LOW );
+      delay(100);
+  }
+  
+}
