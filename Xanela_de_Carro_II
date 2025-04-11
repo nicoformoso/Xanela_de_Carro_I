@@ -1,0 +1,93 @@
+//Declaración de las E/S
+
+#define ARRIBA		8
+#define PULSADOR	2
+#define FC_ARRIBA	3
+#define	FC_ABAJO	4
+#define ABAJO		9
+
+// Declaración de variables
+
+int estado  = 1;
+int contador = 0; // Cuenta impulsos del motor
+
+void setup()
+{
+	pinMode(PULSADOR, INPUT);
+  	pinMode(FC_ARRIBA, INPUT);
+  	pinMode(FC_ABAJO, INPUT);
+  	pinMode(ARRIBA, OUTPUT);
+  	pinMode(ABAJO, OUTPUT);
+  
+  	Serial.begin(9600);
+  	int estado;
+  
+  	Serial.println(estado);
+}
+
+void loop()
+{
+  
+// Lectura de pulsador
+  
+  	if (digitalRead(PULSADOR))
+    {
+      estado++;
+      if (estado > 3)
+      {
+        estado = 0;
+      }
+     contador = 100;
+     while (digitalRead(PULSADOR))
+     {
+       delay (20);
+     }
+    }
+  
+  	if (digitalRead(FC_ARRIBA))
+    {
+      if (estado !=2)
+      {
+        estado = 1;
+      }
+    delay (20);
+      
+    if (digitalRead(FC_ABAJO))
+    {
+      if (estado !=0)
+      {
+        estado = 3;
+      }
+      delay (20);
+    }
+      
+    Serial.print("Valor de contador");
+    Serial.print(contador);
+    Serial.print("Estado");
+    Serial.print(estado);
+      
+   	//Arranque de los motores
+      
+    if (contador > 0)
+    {
+      if (estado == 0)
+      {
+        digitalWrite(ARRIBA, HIGH);
+        digitalWrite(ABAJO, LOW);
+        delay (70);
+      }
+      else if (estado == 2)
+      {
+      	digitalWrite(ARRIBA, LOW);
+        digitalWrite(ABAJO, HIGH);
+        delay (70);
+      }
+      else
+      {
+        digitalWrite(ARRIBA, LOW);
+        digitalWrite(ABAJO, LOW);
+      }
+    }
+  }
+}
+ 
